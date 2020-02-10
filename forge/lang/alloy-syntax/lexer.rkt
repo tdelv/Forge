@@ -97,6 +97,7 @@
    ["some"      (token+ `SOME-TOK "" lexeme "" lexeme-start lexeme-end)]  
    ["sum"       (token+ `SUM-TOK "" lexeme "" lexeme-start lexeme-end)]
    ["test"      (token+ `TEST-TOK "" lexeme "" lexeme-start lexeme-end)]
+   ["checkxspec"  (token+ `CHECK-EX-SPEC-TOK "" lexeme "" lexeme-start lexeme-end)]
    ["univ"      (token+ `UNIV-TOK "" lexeme "" lexeme-start lexeme-end)]
    ["unsat"     (token+ `UNSAT-TOK "" lexeme "" lexeme-start lexeme-end)]  
    ["break"     (token+ `BREAK-TOK "" lexeme "" lexeme-start lexeme-end)]  

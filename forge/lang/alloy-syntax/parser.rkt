@@ -7,12 +7,13 @@ AlloyModule : ModuleDecl? Import* Paragraph*
 ModuleDecl : /MODULE-TOK QualName (LEFT-SQUARE-TOK NameList RIGHT-SQUARE-TOK)?
 Import : OPEN-TOK QualName (LEFT-SQUARE-TOK QualNameList RIGHT-SQUARE-TOK)? (AS-TOK Name)?
 @Paragraph : SigDecl 
-          | FactDecl 
+          | FactDecl
           | PredDecl 
           | FunDecl 
           | AssertDecl 
           | CmdDecl
           | TestExpectDecl
+          | CheckExSpecDecl
           | SexprDecl
           | BreakDecl
           | InstanceDecl
@@ -39,6 +40,7 @@ CmdDecl :  (Name /COLON-TOK)? (RUN-TOK | CHECK-TOK) (QualName | Block)? Scope? (
 TestDecl : (Name /COLON-TOK)? (QualName | Block)? Scope? (/FOR-TOK Bounds)? /IS-TOK (SAT-TOK | UNSAT-TOK)
 TestExpectDecl : TEST-TOK? EXPECT-TOK Name? TestBlock
 TestBlock : /LEFT-CURLY-TOK TestDecl* /RIGHT-CURLY-TOK
+CheckExSpecDecl : CHECK-EX-SPEC-TOK QualName? (/FOR-TOK Bounds)? /IS-TOK (SAT-TOK | UNSAT-TOK)
 Scope : /FOR-TOK Number (/BUT-TOK @TypescopeList)? 
       | /FOR-TOK @TypescopeList
 Typescope : EXACTLY-TOK? Number QualName
