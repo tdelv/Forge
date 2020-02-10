@@ -750,6 +750,40 @@
   datum
 ) stx))
 
+(define-syntax (CheckExSpecDecl stx) (map-stx (lambda (d)
+  (define-values (name cmd arg scope block bounds expect) (values #f 'test #f '() #f #f #f))
+  (define (make-typescope x)
+    (syntax-case x (Typescope)
+      [(Typescope "exactly" n things) (syntax->datum #'(things n n))]
+      [(Typescope n things) (syntax->datum #'(things 0 n))]))
+  (for ([arg (cdr d)])
+    ; (println arg)
+    (syntax-case arg (Name Typescope Scope Block QualName)
+      [(Name n) (set! name (symbol->string (syntax->datum #'n)))]
+      ["sat" (set! expect 'sat)]
+      ["unsat" (set! expect 'unsat)]
+      ; [(? symbol? s) (set! arg (string->symbol #'s))]
+      [(Scope s ...) (set! scope (map make-typescope (syntax->datum #'(s ...))))]
+      ;[(Block (Expr (QualName ns)) ...) (set! block (syntax->datum #'(ns ...)))]
+      ;[(Block b ...) (set! block (syntax->datum #'(b ...)))]
+      ;[(QualName n) (set! block (list (syntax->datum #'n)))]
+      ; [(Block a ...) (set! block (syntax->datum #'(Block a ...)))]
+      [(Bounds _ ...) (set! bounds arg)]
+      [_ #f]
+    )
+  )
+  (if name #f (set! name (symbol->string (gensym))))
+  ;(define datum `(,cmd ,name ,block ,scope ',expect)) ; replaced to support fancy bounds
+  (define datum (if bounds  ; copied from CmdDecl
+    `(begin 
+      ;(let ([bnd (make-hash)]) (println bnd) ,bounds)
+      ,bounds
+      (,cmd ,name ,name ,scope ',expect))
+    `(,cmd ,name ,name ,scope ',expect)))
+  ; (println datum)
+  datum
+) stx))
+
 (define-syntax (TestExpectDecl stx) (map-stx (lambda (d)
   (define-values (name active? block) (values #f #f '()))
   (for ([arg (cdr d)])
