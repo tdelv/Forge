@@ -88,6 +88,7 @@
 
 (provide pre-declare-sig declare-sig set-top-level-bound sigs run check test fact Int iden univ none no some one lone all + - ^ & ~ join ! set in declare-one-sig pred = -> * => not and or set-bitwidth < > add subtract multiply divide int= card sum inst)
 (provide add-relation set-option)
+(provide CheckExSpecDecl)
 
 (define (add-relation rel types)
   (hash-set! relations-store rel types))
@@ -782,7 +783,7 @@
       [(Scope s ...) (set! scope (map make-typescope (syntax->datum #'(s ...))))]
       ;[(Block (Expr (QualName ns)) ...) (set! block (syntax->datum #'(ns ...)))]
       ;[(Block b ...) (set! block (syntax->datum #'(b ...)))]
-      ;[(QualName n) (set! block (list (syntax->datum #'n)))]
+      [(QualName n) (set! block (list (syntax->datum #'n)))]
       ; [(Block a ...) (set! block (syntax->datum #'(Block a ...)))]
       [(Bounds _ ...) (set! bounds arg)]
       [_ #f]
@@ -794,8 +795,8 @@
     `(begin 
       ;(let ([bnd (make-hash)]) (println bnd) ,bounds)
       ,bounds
-      (,cmd ,name ,name ,scope ',expect))
-    `(,cmd ,name ,name ,scope ',expect)))
+      (,cmd ,name ,block ,scope ',expect))
+    `(,cmd ,name ,block ,scope ',expect)))
   ; (println datum)
   datum
 ) stx))

@@ -1,5 +1,5 @@
 #lang info
-(define collection 'use-pkg-name)
+(define collection 'multi)
 
 (define deps '("beautiful-racket" "predicates"))
 
